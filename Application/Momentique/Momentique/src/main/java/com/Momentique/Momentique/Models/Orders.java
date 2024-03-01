@@ -12,14 +12,14 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long OrderId;
+    Long orderId;
 
     public Long getOrderId() {
-        return OrderId;
+        return orderId;
     }
 
     public void setOrderId(Long orderId) {
-        OrderId = orderId;
+        this.orderId = orderId;
     }
 
     
