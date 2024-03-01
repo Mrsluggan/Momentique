@@ -8,13 +8,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 @Entity
-@Table(name = "users")
+@Table(name = "t_users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID userId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID userId;
 
     public UUID getUserId() {
         return userId;
