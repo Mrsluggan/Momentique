@@ -7,11 +7,12 @@ import com.Momentique.Momentique.Models.Product;
 import com.Momentique.Momentique.Repositories.ProductRepository;
 
 @RestController
-public class ProductResource {
+
+public class ProductRest {
 
     private final ProductRepository productRepository;
 
-    public ProductResource(ProductRepository productRepository) {
+    public ProductRest(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -20,6 +21,8 @@ public class ProductResource {
     public Iterable<Product> findAllProducts(){
         return this.productRepository.findAll();
     }
+
+
 
 
 
