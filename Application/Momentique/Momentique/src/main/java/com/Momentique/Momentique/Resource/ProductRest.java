@@ -3,11 +3,16 @@ package com.Momentique.Momentique.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Momentique.Momentique.Models.Product;
 import com.Momentique.Momentique.Repositories.ProductRepository;
+
+import jakarta.websocket.server.PathParam;
 
 @RestController
 
@@ -21,11 +26,33 @@ public class ProductRest {
     }
 
     @GetMapping("products")
-    public Iterable<Product> findAllProducts() {
+    public ResponseEntity<Iterable<Product>> findAllProducts() {
+
+        // Bara för testing
         productRepository.deleteAll();
         List<Product> mockProducts = generateMockProducts();
-        productRepository.saveAll(mockProducts);
-        return this.productRepository.findAll();
+        Iterable<Product> restult = productRepository.saveAll(mockProducts);
+
+        // --------------
+
+        return ResponseEntity.ok(restult);
+    }
+
+    @GetMapping("products/search/{title}")
+    public ResponseEntity<?> findByTitle(@PathVariable("title") String title) {
+        System.out.println("Du sökte efter: " + title);
+
+        if (title.length() < 3) {
+            String errorMessage = "sökningen måste vara längre än 3 tecken.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
+
+        Iterable<Product> result = productRepository.searchProductByTitle(title);
+        if (!result.iterator().hasNext()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(result);
+
     }
 
     private List<Product> generateMockProducts() {
