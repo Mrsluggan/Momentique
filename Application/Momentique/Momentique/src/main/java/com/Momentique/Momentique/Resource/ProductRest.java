@@ -1,20 +1,26 @@
 package com.Momentique.Momentique.Resource;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Momentique.Momentique.Models.Product;
 import com.Momentique.Momentique.Repositories.ProductRepository;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 
-
+import java.nio.file.Path;
 @RestController
-
+@CrossOrigin(origins = "*")
 public class ProductRest {
 
     private final ProductRepository productRepository;
@@ -27,16 +33,19 @@ public class ProductRest {
     @GetMapping("products")
     public ResponseEntity<Iterable<Product>> findAllProducts() {
 
-        // Bara för testing, Om ingen mockdata finns, ta bort .findall() och kör dessa två en gång. Sedan kommenterabort. 
-        //List<Product> mockProducts = generateMockProducts();
-        //Iterable<Product> restult = productRepository.saveAll(mockProducts);
+        // Bara för testing, Om ingen mockdata finns, ta bort .findall() och kör dessa
+        // två en gång. Sedan kommenterabort.
+        List<Product> mockProducts = generateMockProducts();
+        Iterable<Product> restult = productRepository.saveAll(mockProducts);
         // --------------
 
-        //Byt till detta när vi har riktigt data
-        Iterable<Product> restult = productRepository.findAll();
+        // Byt till detta när vi har riktigt data
+        // Iterable<Product> restult = productRepository.findAll();
         return ResponseEntity.ok(restult);
     }
 
+
+    
     @GetMapping("products/search/{title}")
     public ResponseEntity<?> findByTitle(@PathVariable("title") String title) {
         System.out.println("Du sökte efter: " + title);
@@ -54,68 +63,163 @@ public class ProductRest {
 
     }
 
+
+    // Gör så att våran frontend kan få tag på bilderna på servern. 
+    @GetMapping("/images/products/{imageName}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String imageName) throws IOException {
+        Resource resource = new ClassPathResource("static/images/products/" + imageName);
+        byte[] imageBytes = Files.readAllBytes(Path.of(resource.getURI()));
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+    }
+
+
+
+    //Mockdata, gör saker lite finare
     private List<Product> generateMockProducts() {
         List<Product> products = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setTitle("Paris, Frankrike");
+        product1.setDescription(
+                "Utforska den romantiska staden Paris med dess ikoniska Eiffeltorn, konstgallerier och utsökta mat.");
+        product1.setPrice(1200);
+        product1.setImageUrl("/001.jpg");
+        products.add(product1);
+
+        Product product2 = new Product();
+        product2.setTitle("Kyoto, Japan");
+        product2.setDescription(
+                "Upptäck den förtrollande staden Kyoto med dess traditionella tempel, vackra trädgårdar och läckra sushi.");
+        product2.setPrice(1500);
+        product2.setImageUrl("/002.jpg");
+        products.add(product2);
 
         Product product3 = new Product();
-        product3.setTitle("Laptop");
-        product3.setDescription("High-performance laptop with SSD storage.");
-        product3.setPrice(1200);
+        product3.setTitle("Machu Picchu, Peru");
+        product3.setDescription(
+                "Upptäck de mystiska ruinerna av Machu Picchu, en av världens mest kända arkeologiska platser, beläget i de peruanska Anderna.");
+        product3.setPrice(1800);
+        product3.setImageUrl("/003.jpg");
         products.add(product3);
 
         Product product4 = new Product();
-        product4.setTitle("Smartphone");
-        product4.setDescription("Latest smartphone model with advanced camera features.");
-        product4.setPrice(800);
+        product4.setTitle("Rom, Italien");
+        product4.setDescription(
+                "Utforska den antika staden Rom med dess fascinerande historia, imponerande arkitektur och utsökta italienska kök.");
+        product4.setPrice(1400);
+        product4.setImageUrl("/004.jpg");
         products.add(product4);
 
         Product product5 = new Product();
-        product5.setTitle("Wireless Headphones");
-        product5.setDescription("Noise-cancelling wireless headphones for immersive audio experience.");
-        product5.setPrice(250);
+        product5.setTitle("Santorini, Grekland");
+        product5.setDescription(
+                "Njut av den spektakulära utsikten över Egeiska havet från de vita kubformade husen i Santorini, en av Greklands vackraste öar.");
+        product5.setPrice(1600);
+        product5.setImageUrl("/005.jpg");
         products.add(product5);
 
         Product product6 = new Product();
-        product6.setTitle("Fitness Tracker");
-        product6.setDescription("Waterproof fitness tracker with heart rate monitor and GPS.");
-        product6.setPrice(100);
+        product6.setTitle("New York City, USA");
+        product6.setDescription(
+                "Upptäck den pulserande atmosfären i New York City med dess ikoniska landmärken, brokiga stadsdelar och mångfaldiga matutbud.");
+        product6.setPrice(2000);
+        product6.setImageUrl("/006.jpg");
         products.add(product6);
 
         Product product7 = new Product();
-        product7.setTitle("Coffee Maker");
-        product7.setDescription("Programmable coffee maker with built-in grinder.");
-        product7.setPrice(150);
+        product7.setTitle("Cape Town, Sydafrika");
+        product7.setDescription(
+                "Utforska den vackra Cape Town med dess fantastiska stränder, dramatiska bergslandskap och rika kulturella arv.");
+        product7.setPrice(1900);
+        product7.setImageUrl("/007.jpg");
         products.add(product7);
 
         Product product8 = new Product();
-        product8.setTitle("Yoga Mat");
-        product8.setDescription("Eco-friendly yoga mat with non-slip surface.");
-        product8.setPrice(50);
+        product8.setTitle("Bangkok, Thailand");
+        product8.setDescription(
+                "Njut av det livliga gatulivet och den rika kulturen i Bangkok, Thailands pulserande huvudstad.");
+        product8.setPrice(1300);
+        product8.setImageUrl("/008.jpg");
         products.add(product8);
 
         Product product9 = new Product();
-        product9.setTitle("External Hard Drive");
-        product9.setDescription("Portable external hard drive with terabyte storage capacity.");
-        product9.setPrice(80);
+        product9.setTitle("London, Storbritannien");
+        product9.setDescription(
+                "Utforska den mångsidiga staden London med dess kungliga palats, världsberömda teatrar och trendiga shoppingdistrikt.");
+        product9.setPrice(1700);
+        product9.setImageUrl("/009.jpg");
         products.add(product9);
 
         Product product10 = new Product();
-        product10.setTitle("Wireless Mouse");
-        product10.setDescription("Ergonomic wireless mouse with customizable buttons.");
-        product10.setPrice(40);
+        product10.setTitle("Bali, Indonesien");
+        product10.setDescription(
+                "Njut av den avslappnade atmosfären och de fantastiska stränderna på Bali, en tropisk paradisö i Indonesien.");
+        product10.setPrice(1400);
+        product10.setImageUrl("/010.jpg");
         products.add(product10);
 
         Product product11 = new Product();
-        product11.setTitle("Portable Bluetooth Speaker");
-        product11.setDescription("Compact Bluetooth speaker with long battery life.");
-        product11.setPrice(70);
+        product11.setTitle("Dubai, Förenade Arabemiraten");
+        product11.setDescription(
+                "Upptäck det moderna och lyxiga Dubai med dess imponerande skyskrapor, lyxiga shoppingcentra och ökenäventyr.");
+        product11.setPrice(2200);
+        product11.setImageUrl("/011.jpg");
         products.add(product11);
 
         Product product12 = new Product();
-        product12.setTitle("Backpack");
-        product12.setDescription("Durable backpack with padded laptop compartment.");
-        product12.setPrice(60);
+        product12.setTitle("Barcelona, Spanien");
+        product12.setDescription(
+                "Utforska den livliga staden Barcelona med dess unika arkitektur, trendiga strandpromenader och pulserande nattliv.");
+        product12.setPrice(1500);
+        product12.setImageUrl("/012.jpg");
         products.add(product12);
+
+        Product product13 = new Product();
+        product13.setTitle("Tokyo, Japan");
+        product13.setDescription(
+                "Upptäck den spännande metropolen Tokyo med dess futuristiska teknologi, livliga nöjesdistrikt och traditionella tempel.");
+        product13.setPrice(1800);
+        product13.setImageUrl("/013.jpg");
+        products.add(product13);
+
+        Product product14 = new Product();
+        product14.setTitle("Venice, Italien");
+        product14.setDescription(
+                "Njut av en romantisk gondoltur genom Venedigs charmiga kanaler och beundra stadens vackra arkitektur och historiska sevärdheter.");
+        product14.setPrice(1600);
+        product14.setImageUrl("/014.jpg");
+        products.add(product14);
+
+        Product product15 = new Product();
+        product15.setTitle("Sydney, Australien");
+        product15.setDescription(
+                "Utforska den spektakulära staden Sydney med dess ikoniska Operahus, fantastiska stränder och livliga kultur.");
+        product15.setPrice(2000);
+        product15.setImageUrl("/015.jpg");
+        products.add(product15);
+
+        Product product16 = new Product();
+        product16.setTitle("Rio de Janeiro, Brasilien");
+        product16.setDescription(
+                "Njut av den pulserande atmosfären i Rio de Janeiro med dess fantastiska stränder, livliga karneval och imponerande natur.");
+        product16.setPrice(1900);
+        product16.setImageUrl("/016.jpg");
+        products.add(product16);
+
+        Product product17 = new Product();
+        product17.setTitle("Prag, Tjeckien");
+        product17.setDescription(
+                "Upptäck den historiska staden Prag med dess vackra arkitektur, charmiga kullerstensgator och livliga ölstugor.");
+        product17.setPrice(1400);
+        product17.setImageUrl("/017.jpg");
+        products.add(product17);
+
+        Product product18 = new Product();
+        product18.setTitle("Agra, Indien");
+        product18.setDescription(
+                "Besök den ikoniska Taj Mahal och upplev den rika historien och kulturen i Agra, en av Indiens mest fascinerande städer.");
+        product18.setPrice(1700);
+        product18.setImageUrl("/018.jpg");
+        products.add(product18);
 
         return products;
     }

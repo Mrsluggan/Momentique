@@ -2,7 +2,6 @@ package com.Momentique.Momentique.Resource;
 
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +28,7 @@ public class OrdersRest {
         return orderRepository.findAll();
     }
 
-    // Skapa order
+    // Skapa order, denna är WIP. Vi måste lista ut hur vi ska ta orden fron front till oss
     @GetMapping("orders/newOrder")
     public Orders createOrder() {
         orderRepository.deleteAll();
