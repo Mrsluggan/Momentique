@@ -17,6 +17,35 @@ public class Product {
     String description;
     int price;
 
+    
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public long getProductId() {
         return productId;
     }
