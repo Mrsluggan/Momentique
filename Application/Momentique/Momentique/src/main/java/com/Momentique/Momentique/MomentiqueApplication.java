@@ -8,6 +8,9 @@ public class MomentiqueApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MomentiqueApplication.class, args);
+
+
+		
 	}
 
 }

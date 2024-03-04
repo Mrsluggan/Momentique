@@ -1,5 +1,8 @@
 package com.Momentique.Momentique.Resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,31 +17,81 @@ public class ProductRest {
 
     public ProductRest(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        // Lägg till realistisk mockdata direkt i konstruktorn
-        Product product1 = new Product();
-        product1.setTitle("Smartphone");
-        product1.setDescription("A high-end smartphone with all the latest features.");
-        product1.setPrice(799);
 
-        Product product2 = new Product();
-        product2.setTitle("Laptop");
-        product2.setDescription("A powerful laptop for work and entertainment.");
-        product2.setPrice(1299);
-
-        Product product3 = new Product();
-        product3.setTitle("Headphones");
-        product3.setDescription("Wireless headphones with noise cancellation technology.");
-        product3.setPrice(199);
-
-        // Lägg till produkterna i repository
-        productRepository.save(product1);
-        productRepository.save(product2);
-        productRepository.save(product3);
     }
 
     @GetMapping("products")
     public Iterable<Product> findAllProducts() {
+        productRepository.deleteAll();
+        List<Product> mockProducts = generateMockProducts();
+        productRepository.saveAll(mockProducts);
         return this.productRepository.findAll();
+    }
+
+    private List<Product> generateMockProducts() {
+        List<Product> products = new ArrayList<>();
+
+        Product product3 = new Product();
+        product3.setTitle("Laptop");
+        product3.setDescription("High-performance laptop with SSD storage.");
+        product3.setPrice(1200);
+        products.add(product3);
+
+        Product product4 = new Product();
+        product4.setTitle("Smartphone");
+        product4.setDescription("Latest smartphone model with advanced camera features.");
+        product4.setPrice(800);
+        products.add(product4);
+
+        Product product5 = new Product();
+        product5.setTitle("Wireless Headphones");
+        product5.setDescription("Noise-cancelling wireless headphones for immersive audio experience.");
+        product5.setPrice(250);
+        products.add(product5);
+
+        Product product6 = new Product();
+        product6.setTitle("Fitness Tracker");
+        product6.setDescription("Waterproof fitness tracker with heart rate monitor and GPS.");
+        product6.setPrice(100);
+        products.add(product6);
+
+        Product product7 = new Product();
+        product7.setTitle("Coffee Maker");
+        product7.setDescription("Programmable coffee maker with built-in grinder.");
+        product7.setPrice(150);
+        products.add(product7);
+
+        Product product8 = new Product();
+        product8.setTitle("Yoga Mat");
+        product8.setDescription("Eco-friendly yoga mat with non-slip surface.");
+        product8.setPrice(50);
+        products.add(product8);
+
+        Product product9 = new Product();
+        product9.setTitle("External Hard Drive");
+        product9.setDescription("Portable external hard drive with terabyte storage capacity.");
+        product9.setPrice(80);
+        products.add(product9);
+
+        Product product10 = new Product();
+        product10.setTitle("Wireless Mouse");
+        product10.setDescription("Ergonomic wireless mouse with customizable buttons.");
+        product10.setPrice(40);
+        products.add(product10);
+
+        Product product11 = new Product();
+        product11.setTitle("Portable Bluetooth Speaker");
+        product11.setDescription("Compact Bluetooth speaker with long battery life.");
+        product11.setPrice(70);
+        products.add(product11);
+
+        Product product12 = new Product();
+        product12.setTitle("Backpack");
+        product12.setDescription("Durable backpack with padded laptop compartment.");
+        product12.setPrice(60);
+        products.add(product12);
+
+        return products;
     }
 
 }
