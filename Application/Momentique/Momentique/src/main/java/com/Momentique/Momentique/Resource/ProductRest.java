@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Momentique.Momentique.Models.Product;
 import com.Momentique.Momentique.Repositories.ProductRepository;
 
-import jakarta.websocket.server.PathParam;
 
 @RestController
 
@@ -28,14 +27,13 @@ public class ProductRest {
     @GetMapping("products")
     public ResponseEntity<Iterable<Product>> findAllProducts() {
 
-        // Bara för testing
-        productRepository.deleteAll();
-        List<Product> mockProducts = generateMockProducts();
-        Iterable<Product> restult = productRepository.saveAll(mockProducts);
+        // Bara för testing, Om ingen mockdata finns, ta bort .findall() och kör dessa två en gång. Sedan kommenterabort. 
+        //List<Product> mockProducts = generateMockProducts();
+        //Iterable<Product> restult = productRepository.saveAll(mockProducts);
         // --------------
 
         //Byt till detta när vi har riktigt data
-        // Iterable<Product> restult = productRepository.findAll();
+        Iterable<Product> restult = productRepository.findAll();
         return ResponseEntity.ok(restult);
     }
 
