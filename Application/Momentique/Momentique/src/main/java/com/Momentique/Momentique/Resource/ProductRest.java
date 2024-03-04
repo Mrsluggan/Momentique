@@ -32,9 +32,10 @@ public class ProductRest {
         productRepository.deleteAll();
         List<Product> mockProducts = generateMockProducts();
         Iterable<Product> restult = productRepository.saveAll(mockProducts);
-
         // --------------
 
+        //Byt till detta när vi har riktigt data
+        // Iterable<Product> restult = productRepository.findAll();
         return ResponseEntity.ok(restult);
     }
 
