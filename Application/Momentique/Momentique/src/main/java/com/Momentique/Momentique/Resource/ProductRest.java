@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,11 @@ public class ProductRest {
         return ResponseEntity.ok(restult);
     }
 
-
+    @GetMapping("products/{id}")
+    public ResponseEntity<Optional<Product>> findProductById(@PathVariable("id") Long id) {
+        Optional<Product> restult = productRepository.findById(id);
+        return ResponseEntity.ok(restult);
+    }
     
     @GetMapping("products/search/{title}")
     public ResponseEntity<?> findByTitle(@PathVariable("title") String title) {
