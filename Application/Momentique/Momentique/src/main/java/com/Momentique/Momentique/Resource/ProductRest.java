@@ -70,9 +70,9 @@ public class ProductRest {
 
 
     // Gör så att våran frontend kan få tag på bilderna på servern. 
-    @GetMapping("/images/products/{imageName}")
+    @GetMapping("/images/products/compressed/{imageName}")
     public ResponseEntity<byte[]> getImage(@PathVariable String imageName) throws IOException {
-        Resource resource = new ClassPathResource("static/images/products/" + imageName);
+        Resource resource = new ClassPathResource("static/images/products/compressed/" + imageName);
         byte[] imageBytes = Files.readAllBytes(Path.of(resource.getURI()));
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
     }
