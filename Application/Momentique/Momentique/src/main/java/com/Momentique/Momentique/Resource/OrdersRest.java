@@ -3,6 +3,7 @@ package com.Momentique.Momentique.Resource;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import com.Momentique.Momentique.Repositories.OrderRepository;
 import com.Momentique.Momentique.Repositories.ProductRepository;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class OrdersRest {
 
     private final OrderRepository orderRepository;
