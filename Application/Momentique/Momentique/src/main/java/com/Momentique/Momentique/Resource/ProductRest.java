@@ -36,12 +36,12 @@ public class ProductRest {
 
         // Bara för testing, Om ingen mockdata finns, ta bort .findall() och kör dessa
         // två en gång. Sedan kommenterabort.
-        List<Product> mockProducts = generateMockProducts();
-        Iterable<Product> restult = productRepository.saveAll(mockProducts);
+        // List<Product> mockProducts = generateMockProducts();
+        // Iterable<Product> restult = productRepository.saveAll(mockProducts);
         // --------------
 
         // Byt till detta när vi har riktigt data
-        // Iterable<Product> restult = productRepository.findAll();
+        Iterable<Product> restult = productRepository.findAll();
         return ResponseEntity.ok(restult);
     }
 
