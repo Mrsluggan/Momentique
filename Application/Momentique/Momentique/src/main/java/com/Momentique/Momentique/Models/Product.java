@@ -19,8 +19,17 @@ public class Product {
     String description;
     int price;
     String imageUrl;
+    String priceId;
     
   
+
+    public String getPriceId() {
+        return priceId;
+    }
+
+    public void setPriceId(String priceId) {
+        this.priceId = priceId;
+    }
 
     public String getTitle() {
         return title;

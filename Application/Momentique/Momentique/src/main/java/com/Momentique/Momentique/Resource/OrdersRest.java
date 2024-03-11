@@ -12,6 +12,11 @@ import com.Momentique.Momentique.Models.Orders;
 import com.Momentique.Momentique.Models.Product;
 import com.Momentique.Momentique.Repositories.OrderRepository;
 import com.Momentique.Momentique.Repositories.ProductRepository;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
+import com.stripe.model.LineItemCollection;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -23,6 +28,19 @@ public class OrdersRest {
     public OrdersRest(OrderRepository orderRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+    }
+
+    @GetMapping("success/{CHECKOUT_SESSION_ID}")
+    public String getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId ) throws StripeException {
+        System.out.println(checkoutId);
+        Stripe.apiKey = "sk_test_51OoiqDF3bq9e58MhuJUSymuIlR3IVHXrzUIbxxPyNUdmLb2bLOjiYluaRajx1oFHivrdhWKUkJVBe6hcKUVWFkQr00jHP39g4d";
+
+        Session session = Session.retrieve(checkoutId);
+        System.out.println(session);
+        LineItemCollection lineItems = session.listLineItems();
+        System.out.println(lineItems);
+        String str = "hej";
+        return str;
     }
 
     @GetMapping("orders")
