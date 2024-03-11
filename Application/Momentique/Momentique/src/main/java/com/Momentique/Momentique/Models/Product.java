@@ -19,6 +19,7 @@ public class Product {
     String description;
     int price;
     String imageUrl;
+    String priceId;
     
   
 
@@ -60,6 +61,14 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getPriceId() {
+        return priceId;
+    }
+
+    public void setPriceId(String priceId) {
+        this.priceId = priceId;
     }
 
 
