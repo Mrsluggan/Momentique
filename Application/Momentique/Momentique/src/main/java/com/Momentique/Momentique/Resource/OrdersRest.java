@@ -2,11 +2,14 @@ package com.Momentique.Momentique.Resource;
 
 import java.util.Optional;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.Momentique.Momentique.Models.Orders;
 import com.Momentique.Momentique.Models.Product;
@@ -30,18 +33,18 @@ public class OrdersRest {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("success/{CHECKOUT_SESSION_ID}")
-    public String getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId ) throws StripeException {
-        System.out.println(checkoutId);
-        Stripe.apiKey = "sk_test_51OoiqDF3bq9e58MhuJUSymuIlR3IVHXrzUIbxxPyNUdmLb2bLOjiYluaRajx1oFHivrdhWKUkJVBe6hcKUVWFkQr00jHP39g4d";
+    // @GetMapping("success/{CHECKOUT_SESSION_ID}")
+    // public RedirectView getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId ) throws StripeException {
+    //     System.out.println(checkoutId);
+    //     Stripe.apiKey = "sk_test_51OoiqDF3bq9e58MhuJUSymuIlR3IVHXrzUIbxxPyNUdmLb2bLOjiYluaRajx1oFHivrdhWKUkJVBe6hcKUVWFkQr00jHP39g4d";
 
-        Session session = Session.retrieve(checkoutId);
-        System.out.println(session);
-        LineItemCollection lineItems = session.listLineItems();
-        System.out.println(lineItems);
-        String str = "hej";
-        return str;
-    }
+    //     Session session = Session.retrieve(checkoutId);
+    //     System.out.println(session);
+    //     LineItemCollection lineItems = session.listLineItems();
+    //     System.out.println(lineItems);
+
+    //     return new RedirectView("http://127.0.0.1:5501/afterPay.html");
+    // }
 
     @GetMapping("orders")
     public Iterable<Orders> findAllOrders() {
@@ -83,4 +86,33 @@ public class OrdersRest {
     // Ta bort order
 
 
+
+
+
+
+    @GetMapping("/success/{CHECKOUT_SESSION_ID}")
+    public RedirectView getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId, @RequestParam(required = false) boolean canceled) throws StripeException {
+        Stripe.apiKey = "sk_test_51OoiqDF3bq9e58MhuJUSymuIlR3IVHXrzUIbxxPyNUdmLb2bLOjiYluaRajx1oFHivrdhWKUkJVBe6hcKUVWFkQr00jHP39g4d";
+
+        String redirectUrl = "http://127.0.0.1:5501/afterPay.html";
+
+        if (canceled) {
+            // Om betalningen avbröts av användaren
+            redirectUrl += "?status=denied";
+        } else {
+            // Hämta sessionen med det angivna checkoutId
+            Session session = Session.retrieve(checkoutId);
+
+            // Kontrollera om betalningen var framgångsrik baserat på sessionens status
+            String paymentStatus = session.getPaymentStatus();
+
+            if ("paid".equals(paymentStatus)) {
+                redirectUrl += "?status=success";
+            } else {
+                redirectUrl += "?status=denied";
+            }
+        }
+
+        return new RedirectView(redirectUrl);
+    }
 }
