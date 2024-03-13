@@ -35,29 +35,26 @@ public class OrdersRest {
     private final OrderService orderService;
 
 
-    // public OrdersRest(OrderRepository orderRepository, ProductRepository productRepository) {
-    //     this.orderRepository = orderRepository;
-    //     this.productRepository = productRepository;
-    // }
-
-    // @GetMapping("success/{CHECKOUT_SESSION_ID}")
-    // public RedirectView getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId ) throws StripeException {
-    //     System.out.println(checkoutId);
-    //     Stripe.apiKey = "sk_test_51OoiqDF3bq9e58MhuJUSymuIlR3IVHXrzUIbxxPyNUdmLb2bLOjiYluaRajx1oFHivrdhWKUkJVBe6hcKUVWFkQr00jHP39g4d";
-
-    //     Session session = Session.retrieve(checkoutId);
-    //     System.out.println(session);
-    //     LineItemCollection lineItems = session.listLineItems();
-    //     System.out.println(lineItems);
-
-    //     return new RedirectView("http://127.0.0.1:5501/afterPay.html");
-    // }
-
     public OrdersRest(OrderRepository orderRepository, ProductRepository productRepository, OrderService orderService) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.orderService = orderService;
     }
+
+
+    @GetMapping("success/{CHECKOUT_SESSION_ID}")
+    public RedirectView getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId ) throws StripeException {
+        System.out.println(checkoutId);
+        Stripe.apiKey = "sk_test_51OoiqDF3bq9e58MhuJUSymuIlR3IVHXrzUIbxxPyNUdmLb2bLOjiYluaRajx1oFHivrdhWKUkJVBe6hcKUVWFkQr00jHP39g4d";
+
+        Session session = Session.retrieve(checkoutId);
+        System.out.println(session);
+        LineItemCollection lineItems = session.listLineItems();
+        System.out.println(lineItems);
+
+        return new RedirectView("http://127.0.0.1:5501/afterPay.html");
+    }
+
 
     @GetMapping("orders")
     public Iterable<Orders> findAllOrders() {
@@ -102,51 +99,5 @@ public class OrdersRest {
 
 
 
-
-    @GetMapping("/success/{CHECKOUT_SESSION_ID}")
-    public RedirectView getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId, @RequestParam(required = false) boolean canceled) throws StripeException {
-        Stripe.apiKey = "sk_test_51OoiqDF3bq9e58MhuJUSymuIlR3IVHXrzUIbxxPyNUdmLb2bLOjiYluaRajx1oFHivrdhWKUkJVBe6hcKUVWFkQr00jHP39g4d";
-
-        String redirectUrl = "http://127.0.0.1:5501/afterPay.html";
-
-        if (canceled) {
-            // Om betalningen avbröts av användaren
-            redirectUrl += "?status=denied";
-        } else {
-            // Hämta sessionen med det angivna checkoutId
-            Session session = Session.retrieve(checkoutId);
-
-            // Kontrollera om betalningen var framgångsrik baserat på sessionens status
-            String paymentStatus = session.getPaymentStatus();
-
-            if ("paid".equals(paymentStatus)) {
-                redirectUrl += "?status=success";
-            } else {
-                redirectUrl += "?status=denied";
-            }
-        }
-
-        return new RedirectView(redirectUrl);
-    }
-
-        // @PostMapping("/api/orders")
-        // public ResponseEntity<Orders> createOrder(@RequestBody Orders order) {
-        //     Orders savedOrder = orderService.createAndSaveOrder(order);
-        //     return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
-        // }
-
-        @PostMapping("/api/orders")
-        public ResponseEntity<Orders> createOrder(@RequestBody Orders orderRequest) {
-            // Extrahera nödvändiga värden från orderRequest-objektet
-            String stripeOrderId = orderRequest.getStripeOrderId();
-            Long totalCost = orderRequest.getTotalCost();
-            List<Product> products = orderRequest.getProducts();
-
-            // Anropa service-metoden med extraherade värden
-            Orders savedOrder = orderService.createAndSaveOrder(stripeOrderId, totalCost, products);
-
-            // Skicka tillbaka det sparade order-objektet i svaret
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
-        }
 
 }
