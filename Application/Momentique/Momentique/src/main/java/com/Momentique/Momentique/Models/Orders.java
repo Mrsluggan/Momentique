@@ -3,6 +3,7 @@ package com.Momentique.Momentique.Models;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,10 +17,26 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long orderId;
+    Long id;
+    String stripeOrderId;
     Long totalCost;
-    @OneToMany
+
+    Long orderId;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.setOrder(this);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+        product.setOrder(null);
+    }
+
+    
 
     public Long getOrderId() {
         return orderId;
@@ -43,6 +60,22 @@ public class Orders {
 
     public void setTotalCost(Long totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getStripeOrderId() {
+        return stripeOrderId;
+    }
+
+    public void setStripeOrderId(String stripeOrderId) {
+        this.stripeOrderId = stripeOrderId;
     }
 
 }
