@@ -1,12 +1,16 @@
 package com.Momentique.Momentique.Resource;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -15,7 +19,7 @@ import com.Momentique.Momentique.Models.Orders;
 import com.Momentique.Momentique.Models.Product;
 import com.Momentique.Momentique.Repositories.OrderRepository;
 import com.Momentique.Momentique.Repositories.ProductRepository;
-
+import com.Momentique.Momentique.Services.OrderService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -28,10 +32,13 @@ public class OrdersRest {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
-    public OrdersRest(OrderRepository orderRepository, ProductRepository productRepository) {
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
-    }
+    private final OrderService orderService;
+
+
+    // public OrdersRest(OrderRepository orderRepository, ProductRepository productRepository) {
+    //     this.orderRepository = orderRepository;
+    //     this.productRepository = productRepository;
+    // }
 
     // @GetMapping("success/{CHECKOUT_SESSION_ID}")
     // public RedirectView getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId ) throws StripeException {
@@ -45,6 +52,12 @@ public class OrdersRest {
 
     //     return new RedirectView("http://127.0.0.1:5501/afterPay.html");
     // }
+
+    public OrdersRest(OrderRepository orderRepository, ProductRepository productRepository, OrderService orderService) {
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
+        this.orderService = orderService;
+    }
 
     @GetMapping("orders")
     public Iterable<Orders> findAllOrders() {
@@ -116,5 +129,24 @@ public class OrdersRest {
         return new RedirectView(redirectUrl);
     }
 
-    
+        // @PostMapping("/api/orders")
+        // public ResponseEntity<Orders> createOrder(@RequestBody Orders order) {
+        //     Orders savedOrder = orderService.createAndSaveOrder(order);
+        //     return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
+        // }
+
+        @PostMapping("/api/orders")
+        public ResponseEntity<Orders> createOrder(@RequestBody Orders orderRequest) {
+            // Extrahera nödvändiga värden från orderRequest-objektet
+            String stripeOrderId = orderRequest.getStripeOrderId();
+            Long totalCost = orderRequest.getTotalCost();
+            List<Product> products = orderRequest.getProducts();
+
+            // Anropa service-metoden med extraherade värden
+            Orders savedOrder = orderService.createAndSaveOrder(stripeOrderId, totalCost, products);
+
+            // Skicka tillbaka det sparade order-objektet i svaret
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
+        }
+
 }
