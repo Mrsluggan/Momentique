@@ -19,11 +19,11 @@ import com.Momentique.Momentique.Models.Orders;
 import com.Momentique.Momentique.Models.Product;
 import com.Momentique.Momentique.Repositories.OrderRepository;
 import com.Momentique.Momentique.Repositories.ProductRepository;
+import com.Momentique.Momentique.Services.OrderService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.model.LineItemCollection;
-
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -37,6 +37,7 @@ public class OrdersRest {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
     }
+
 
     @GetMapping("success/{CHECKOUT_SESSION_ID}")
     public RedirectView getCust(@PathVariable("CHECKOUT_SESSION_ID") String checkoutId, @RequestParam(required = false) boolean canceled, RedirectAttributes ra) throws StripeException {
@@ -155,5 +156,10 @@ public class OrdersRest {
     }
 
     // Ta bort order
+
+
+
+
+
 
 }

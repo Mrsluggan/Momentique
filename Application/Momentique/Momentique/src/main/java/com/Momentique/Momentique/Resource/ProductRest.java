@@ -82,6 +82,7 @@ public class ProductRest {
     private List<Product> generateMockProducts() {
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();
+        
         product1.setTitle("Paris, Frankrike");
         product1.setDescription(
                 "Utforska den romantiska staden Paris med dess ikoniska Eiffeltorn, konstgallerier och utsökta mat.");

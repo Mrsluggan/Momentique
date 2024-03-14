@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +17,7 @@ import com.Momentique.Momentique.Models.Product;
 
 import jakarta.transaction.Transactional;
 
-public interface OrderRepository extends CrudRepository<Orders, Long> {
+public interface OrderRepository extends JpaRepository<Orders, Long> {
 
     @Query("SELECT o FROM Orders o WHERE o.temporaryUUID = ?1")
     List<Orders>  searchOrderByTU(UUID TU);

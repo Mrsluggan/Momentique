@@ -16,11 +16,11 @@ import jakarta.annotation.PostConstruct;
 public class StripeService {
 
     @Value("${stripe.api.key}")
-    private String apiKey;
+    private String apiKey; 
 
     @PostConstruct
     public void init() {
-        Stripe.apiKey = this.apiKey; // Initialisera Stripe en gång när bönans livscykel startar
+        Stripe.apiKey = this.apiKey; 
     }
 
     public PaymentIntent createPaymentIntent(long amount, String currency) throws StripeException {
