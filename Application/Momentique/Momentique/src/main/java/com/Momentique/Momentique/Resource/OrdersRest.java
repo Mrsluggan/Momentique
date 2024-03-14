@@ -58,10 +58,11 @@ public class OrdersRest {
             List<String> listOfProducts = new ArrayList<>();
             double totalPrice = 0;
 
-            for (int i=0; i<lineItems.getObject().length()-1; i++) {
+
+            for (int i=0; i<lineItems.getData().size(); i++) {
                 double price = (double)lineItems.getData().get(i).getAmountTotal()/100;
                 int quantity = lineItems.getData().get(i).getQuantity().intValue();
-
+    
                 JSONObject j = new JSONObject();
                 j.put("quantity", String.valueOf(quantity));
                 j.put("name", lineItems.getData().get(i).getDescription());
