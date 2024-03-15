@@ -156,8 +156,25 @@ public class OrdersRest {
     // Ta bort order
 
 
+    // @GetMapping("/latest/{userUuid}")
+    // public ResponseEntity<Orders> getLatestOrder(@PathVariable UUID userUuid) {
+    //     Orders latestOrder = orderRepository.findTopByUserUuidOrderByOrderIdDesc(userUuid);
+    //     if (latestOrder != null) {
+    //         return ResponseEntity.ok(latestOrder);
+    //     } else {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    // }
 
-
-
+    @GetMapping("/latest")
+    public ResponseEntity<Orders> getLatestOrder() {
+        Orders latestOrder = orderRepository.findTopByOrderByOrderIdDesc();
+        if (latestOrder != null) {
+            return ResponseEntity.ok(latestOrder);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
 
 }

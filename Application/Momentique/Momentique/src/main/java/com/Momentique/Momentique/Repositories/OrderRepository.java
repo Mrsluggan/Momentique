@@ -21,4 +21,9 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
     @Modifying
     @Query ("UPDATE Orders o SET o.temporaryUUID = ?1 WHERE o.temporaryUUID = ?2")
     int eraseTemporaryUUID(UUID updatedUuid, UUID uuid);
+
+    // Orders findTopByUserUuidOrderByOrderIdDesc(UUID userUuid);
+    Orders findTopByOrderByOrderIdDesc();
+
+
 }
