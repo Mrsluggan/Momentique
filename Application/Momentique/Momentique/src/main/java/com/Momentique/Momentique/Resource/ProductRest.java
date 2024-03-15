@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Momentique.Momentique.Models.Product;
-import com.Momentique.Momentique.Repositories.ProductRepository;
+import com.Momentique.Momentique.Models.Products.Product;
+import com.Momentique.Momentique.Repositories.Products.ProductRepository;
+
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 

@@ -1,4 +1,4 @@
-package com.Momentique.Momentique.Repositories;
+package com.Momentique.Momentique.Repositories.Products;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.Momentique.Momentique.Models.Product;
+import com.Momentique.Momentique.Models.Products.Product;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
 

@@ -1,4 +1,6 @@
-package com.Momentique.Momentique.Models;
+package com.Momentique.Momentique.Models.Products;
+
+import com.Momentique.Momentique.Models.Orders;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
