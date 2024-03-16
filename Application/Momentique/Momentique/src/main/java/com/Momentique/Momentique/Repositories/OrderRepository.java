@@ -15,15 +15,11 @@ import jakarta.transaction.Transactional;
 public interface OrderRepository extends JpaRepository<Orders, Long> {
 
     @Query("SELECT o FROM Orders o WHERE o.temporaryUUID = ?1")
-    List<Orders>  searchOrderByTU(UUID TU);
+    Orders  searchOrderByTU(UUID TU);
 
     @Transactional
     @Modifying
     @Query ("UPDATE Orders o SET o.temporaryUUID = ?1 WHERE o.temporaryUUID = ?2")
     int eraseTemporaryUUID(UUID updatedUuid, UUID uuid);
-
-    // Orders findTopByUserUuidOrderByOrderIdDesc(UUID userUuid);
-    Orders findTopByOrderByOrderIdDesc();
-
 
 }
