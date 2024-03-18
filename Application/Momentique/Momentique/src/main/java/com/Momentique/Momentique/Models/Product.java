@@ -1,13 +1,9 @@
-package com.Momentique.Momentique.Models.Products;
-
-import com.Momentique.Momentique.Models.Orders;
+package com.Momentique.Momentique.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 
@@ -24,12 +20,8 @@ public class Product {
     int price;
     String imageUrl;
     String priceId;
-    
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Orders order;
+    int quntity;
   
-
 
     public String getTitle() {
         return title;
@@ -79,14 +71,15 @@ public class Product {
         this.priceId = priceId;
     }
 
-    public Orders getOrder() {
-        return order;
+    public int getQuntity() {
+        return quntity;
     }
 
-    public void setOrder(Orders order) {
-        this.order = order;
+    public void setQuntity(int quntity) {
+        this.quntity = quntity;
     }
 
+    
 
 
 }
