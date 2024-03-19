@@ -30,13 +30,9 @@ public class ProductRest {
 
         private final ProductRepository productRepository;
 
-        private final PostcardRepository postcardRepository;
-        private final DigitalProductRepository digitalProductRepository;
-
-        public ProductRest(ProductRepository productRepository, PostcardRepository postcardRepository,DigitalProductRepository digitalProductRepository) {
+        public ProductRest(ProductRepository productRepository) {
                 this.productRepository = productRepository;
-                this.postcardRepository = postcardRepository;
-                this.digitalProductRepository = digitalProductRepository;
+
         }
 
         @GetMapping("products")
@@ -48,14 +44,14 @@ public class ProductRest {
                 // Iterable<Product> restult = productRepository.saveAll(mockProducts);
 
                 // Byt till detta när vi har riktigt data
-                Iterable<Product> restult = productRepository.findAll();
-                return ResponseEntity.ok(restult);
+                Iterable<Product> result = productRepository.findAll();
+                return ResponseEntity.ok(result);
         }
 
         @GetMapping("products/{id}")
         public ResponseEntity<Optional<Product>> findProductById(@PathVariable("id") Long id) {
-                Optional<Product> restult = productRepository.findById(id);
-                return ResponseEntity.ok(restult);
+                Optional<Product> result = productRepository.findById(id);
+                return ResponseEntity.ok(result);
         }
 
         @GetMapping("products/search/{title}")
@@ -73,6 +69,21 @@ public class ProductRest {
                 }
                 return ResponseEntity.ok(result);
 
+        }
+
+        @GetMapping("products/threeRandom")
+        public ResponseEntity<Iterable<Product>> getThreeRandom() {
+                Iterable<Product> result = productRepository.selectedThreeRandom();
+
+                return ResponseEntity.ok(result);
+        }
+
+        @GetMapping("products/loadData")
+        public String loadMockData() {
+
+                List<Product> mockProducts = generateMockProducts();
+                Iterable<Product> restult = productRepository.saveAll(mockProducts);
+                return "yey";
         }
 
         // Gör så att våran frontend kan få tag på bilderna på servern.
