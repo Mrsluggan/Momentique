@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.Momentique.Momentique.Models.Orders;
 import com.Momentique.Momentique.Repositories.OrderRepository;
-import com.Momentique.Momentique.Repositories.Products.ProductRepository;
+import com.Momentique.Momentique.Repositories.ProductRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;

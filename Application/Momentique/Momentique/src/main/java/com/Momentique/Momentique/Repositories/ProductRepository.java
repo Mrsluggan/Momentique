@@ -1,4 +1,4 @@
-package com.Momentique.Momentique.Repositories.Products;
+package com.Momentique.Momentique.Repositories;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.Momentique.Momentique.Models.Products.Product;
+import com.Momentique.Momentique.Models.Product;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
@@ -16,4 +16,8 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Query(value = "SELECT * FROM t_products ORDER BY RANDOM() LIMIT 3", nativeQuery = true)
     List<Product> selectedThreeRandom();
 
+
+    @Query("SELECT p FROM Product p WHERE p.productId <= 18")
+    List<Product>  searchProducts();
+    
 }
