@@ -36,7 +36,7 @@ public class ProductRest {
     @GetMapping("products")
     public ResponseEntity<Iterable<Product>> findAllProducts() {
 
-        Iterable<Product> result = productRepository.findAll();
+        Iterable<Product> result = productRepository.searchProducts();
         return ResponseEntity.ok(result);
 
     }
