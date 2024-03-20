@@ -56,7 +56,7 @@ public class ProductRest {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
 
-        Iterable<Product> result = productRepository.searchProductByTitle(title);
+        Iterable<Product> result = productRepository.searchProductByTitle(title.toLowerCase());
         if (!result.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         }
